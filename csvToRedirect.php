@@ -44,12 +44,8 @@ class csvToRedirect
         }
 
         foreach ($this->_data as $v) {
-            if (preg_match('%^/imc-product.cfm(.*)?%', $v[0])) {
-                $this->_sorted['imc-product'][] = [$v[0], $v[1]];
-            }
-
-            if (preg_match('%^/imc-product-cat.cfm(.*)?%', $v[0])) {
-                $this->_sorted['imc-product-cat'][] = [$v[0], $v[1]];
+            if (preg_match('%^/product.cfm(.*)?%', $v[0])) {
+                $this->_sorted['product'][] = [$v[0], $v[1]];
             }
         }
         return true;
@@ -58,8 +54,8 @@ class csvToRedirect
     protected function buildOutput()
     {
         foreach($this->_sorted['imc-product'] as $v){
-            $vars = preg_replace(['%^/imc-product.cfm\?%'], '', $v[0]);
-            $this->_output .= 'RewriteCond %{REQUEST_URI} ^/imc-product.cfm$'."\r\n";
+            $vars = preg_replace(['%^/product.cfm\?%'], '', $v[0]);
+            $this->_output .= 'RewriteCond %{REQUEST_URI} ^/product.cfm$'."\r\n";
             $this->_output .= 'RewriteCond %{QUERY_STRING} ^'.$vars."$\r\n";
             $this->_output .= 'RewriteRule ^.*$ ' . $v[1] . '? [L,R=301]' . "\r\n";
         }
